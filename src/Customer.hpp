@@ -31,6 +31,12 @@ public:
     // customer rental statement
     std::string statement() const;
 
-};
+    double getTotalCharge() const;
+
+  //move this to Rental
+  // int getFrequentRenterPoints(Rental) const;
+
+  int getTotalFrequentRenterPoints() const;
+ };
 
 #endif

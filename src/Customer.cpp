@@ -29,47 +29,48 @@ std::string Customer::getName() const {
     return name;
 }
 
-// customer rental statement
-std::string Customer::statement() const {
+double Customer::getTotalCharge() const {
 
     double totalAmount = 0;
-    int frequentRenterPoints = 0;
+    for(std::vector<Rental>::const_iterator it = rentals.begin(); it != rentals.end(); ++it) {
+        Rental each = (Rental) *it;
+        totalAmount += each.getCharge();
+    }
+    return totalAmount;
+}
+
+
+
+int Customer::getTotalFrequentRenterPoints() const{
+  int total = 0;
+  for(std::vector<Rental>::const_iterator it = rentals.begin(); it != rentals.end(); ++it) {
+    total+=(*it).getFrequentRenterPoints();
+  }
+  return total;
+}
+
+
+
+
+std::string Customer::statement() const {
+
+  // int frequentRenterPoints =0;
     std::string result = "Rental Record for " + getName() + "\n";
     for(std::vector<Rental>::const_iterator it = rentals.begin(); it != rentals.end(); ++it) {
-        double thisAmount = 0;
         Rental each = (Rental) *it;
+	//frequentRenterPoints += each.getFrequentRenterPoints();
+	
 
-        //determine amounts for each line
-        switch (each.getMovie().getPriceCode()) {
-            case Movie::REGULAR:
-                thisAmount += 2;
-                if (each.getDaysRented() > 2)
-                    thisAmount += (each.getDaysRented() - 2) * 1.5;
-                break;
-            case Movie::NEW_RELEASE:
-                thisAmount += each.getDaysRented() * 3;
-                break;
-            case Movie::CHILDRENS:
-                thisAmount += 1.5;
-                if (each.getDaysRented() > 3)
-                    thisAmount += (each.getDaysRented() - 3) * 1.5;
-                break;
-
-        }
-
-        // add frequent renter points
-        ++frequentRenterPoints;
+	// ++frequentRenterPoints;
         // add bonus for a two day new release rental
-        if ((each.getMovie().getPriceCode() == Movie::NEW_RELEASE) &&
-            each.getDaysRented() > 1) frequentRenterPoints ++;
+       
 
         //show figures for this rental
         result += "\t" + each.getMovie().getTitle()+ "\t";
         std::ostringstream amount_stream;
-        amount_stream << thisAmount;
+        amount_stream << each.getCharge();
         result +=  amount_stream.str();
         result += "\n";
-        totalAmount += thisAmount;
 
     }
 
@@ -77,14 +78,14 @@ std::string Customer::statement() const {
     // total amount owed
     result += "Amount owed is: ";
     std::ostringstream owed_stream;
-    owed_stream << totalAmount;
+    owed_stream << getTotalCharge();
     result += owed_stream.str();
     result += "\n";
 
     // frequent renter points earned
     result += "You earned: ";
     std::ostringstream frequent_stream;
-    frequent_stream << frequentRenterPoints;
+    frequent_stream << getTotalFrequentRenterPoints();
     result += frequent_stream.str();
     result += " frequent renter points\n";
 

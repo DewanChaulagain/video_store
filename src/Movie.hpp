@@ -8,7 +8,7 @@
 #define MOVIE_H
 
 #include <string>
-
+class Price;
 class Movie {
 
 public:
@@ -19,7 +19,7 @@ public:
 private:
     std::string title;
     int price_code;
-
+    Price* price;
 public:
     // constructor
     Movie(const std::string& title, int price_code);
@@ -32,6 +32,20 @@ public:
 
     // movie title
     const std::string& getTitle() const;
+
+  double getCharge(int daysRented) const;
+  int getFrequentRenterPoints(int daysRented) const;
+
+  Movie& operator=(Movie movie){
+    swap(movie);
+    return *this;
+  }
+
+  void swap(Movie& movie){
+    std::swap(title,movie.title);
+  }
+  Movie(const Movie& movie);
+  ~Movie(){}
 
 };
 

@@ -25,6 +25,9 @@ public:
     // movie rented
     const Movie& getMovie() const;
 
+    double getCharge() const;
+
+  int getFrequentRenterPoints() const;
 
 };
 
