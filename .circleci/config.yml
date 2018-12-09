@@ -7,4 +7,4 @@ jobs:
       - checkout
       - run:
           name: Greeting
-          command: ls
+          command: cd ./src && make test 
